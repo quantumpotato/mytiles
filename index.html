@@ -69,33 +69,33 @@ function draw() {
   drawGrid();
 }
 
-function connectedTile(y, x) {
+function connectedTile(y, x, t) {
   var connected = false;
   if (x > 0) {
     var left = grid[y][x-1]; 
-    connected = left === turn + 1;
+    connected = left === t + 1;
   }
 
   if (!connected && x < grid.length) {
     var right = grid[y][x+1];
-    connected = right === turn + 1;
+    connected = right === t + 1;
   }
 
   if (!connected && y > 0) {
     var above = grid[y-1][x];
-    connected = above === turn + 1;
+    connected = above === t + 1;
   }
 
   if (!connected && y < grid.length) {
     var below = grid[y+1][x];
-    connected = below === turn + 1;	
+    connected = below === t + 1;	
   }
 
   return connected;
 }
 
 function moveTile(y, x) {
-  var connected = connectedTile(y, x);
+  var connected = connectedTile(y, x, turn);
  
   if (!connected) {
     return;
@@ -103,34 +103,38 @@ function moveTile(y, x) {
  
   grid[y][x] = 1+turn;
 
-  points[turn]--;
-  if (points[turn] <= 0) {
-    points[turn] = maxPoints[turn];
-    maxPoints[turn] = 2;
-    turn = Math.abs(1 - turn);
-  }
-
-  
-
-
   var other = 1 + (Math.abs(1 - turn));
+  console.log("other: " + other);
 
   var cutoff = false;
   for (var row = 0; row < grid.length; row++) {
     for (var col = 0; col < grid.length; col++) {
-       var tile = grid[col][row]; 
-       if (tile === other && connectedTile(col, row) === false && cutoff === false) {
-         console.log("cutoff: " + col + "," + row);
-         cutoff = true;
-       }
+      if (cutoff == false) {
+        if (connectedTile(col, row, other)) {
+
+        } else {
+           cutoff = true;
+        }
+      }
     }
   }
 
+  console.log("hello");
+  points[turn]--;
+  console.log(points[turn]);
+  if (points[turn] <= 0) {
+    points[turn] = maxPoints[turn];
+    maxPoints[turn] = 2;
+    turn = Math.abs(1 - turn);
 
-  if (cutoff === true) {
-//    maxPoints[turn]++;
-    //console.log("step up");
+    if (cutoff == true) {
+      maxPoints[turn]++;
+      console.log("step up");
+    }
+
+
   }
+
 
 
 }
