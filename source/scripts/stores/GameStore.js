@@ -6,8 +6,9 @@ var GameStore = Phlux.createStore({
         return this.data.player
     },
     togglePlayer: function() {
-        this.player += 1
-        this.player %= 2
+        this.data.player += 1
+        this.data.player %= 2
+        this.trigger()
     }
 })
 

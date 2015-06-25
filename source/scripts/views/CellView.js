@@ -1,10 +1,11 @@
 var CellView = React.createClass({
     render: function() {
+        var cell = this.props.data
         return (
-            <div onClick={this.props.data.onClick.bind(this.props.data)}
-                onMouseOver={this.props.data.onMouseOver.bind(this.props.data)}
-                onMouseOut={this.props.data.onMouseOut.bind(this.props.data)}
-                style={this.props.data.getStyle()}/>
+            <div onClick={cell.onClick.bind(cell)}
+                onMouseOver={cell.onMouseOver.bind(cell)}
+                onMouseOut={cell.onMouseOut.bind(cell)}
+                style={cell.renderStyle()}/>
         )
     }
 })
