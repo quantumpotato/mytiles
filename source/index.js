@@ -26,7 +26,9 @@ var Cell = function(x, y) {
 }
 
 Cell.prototype.onClick = function() {
-	console.log(this.position)
+	this.claim += 1
+	this.claim %= 3
+	this.trigger()
 }
 
 var CellStore = Phlux.createStore({
@@ -35,6 +37,7 @@ var CellStore = Phlux.createStore({
 			for(var y = 0; y < 5; y++) {
 				var cell = new Cell(x, y)
 				this.data[x + "x" + y] = cell
+				cell.trigger = this.trigger.bind(this)
 			}
 		}
 	}
@@ -60,7 +63,7 @@ var CellRender = React.createClass({
 		}
 	},
 	onClick: function() {
-		console.log(this.props.data.position)
+		this.props.data.onClick()
 	}
 })
 

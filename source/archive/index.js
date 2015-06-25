@@ -1,59 +1,6 @@
-var context;
-var width = 500;
-var height = 500;
-
-function setBackground() {
-	context.clearRect(0, 0, width, height);
-	context.fillStyle = "white";
-	context.fillRect(0,0,width,height);
-}
-
-function point(x,y) {
-	this.x = x;
-	this.y = y;
-}
-
-var grid = [
-	[1,0,0,0,0],
-	[0,0,0,0,0],
-	[0,0,0,0,0],
-	[0,0,0,0,0],
-	[0,0,0,0,2]
-]
-
-var mouse = new point(0,0);
-
-var colors = ["black", "green", "red"];
-
-var turn = 0;
-var points = [2, 2];
-var maxPoints = [2, 2];
-
-var spacing = 2;
-var tileSize = 40;
-
-function drawGrid() {
-	var y = 0;
-	var x = 0;
-
-	for (var row = 0; row < grid.length; row++) {
-		x = 0;
-		var line = grid[row];
-		for (var col = 0; col < line.length; col++) {
-			var tile = line[col];
-			context.clearRect(x * tileSize + ((x + 1) * spacing), y * tileSize + ((y + 1) * spacing), tileSize, tileSize);
-			context.fillStyle =  colors[tile];
-			context.fillRect(x * tileSize + ((x + 1) * spacing), y * tileSize + ((y + 1) * spacing), tileSize, tileSize);
-			x++;
-		}
-		y++;
-	}
-}
-
-function draw() {
-	setBackground();
-	drawGrid();
-}
+var turn = 0; //!
+var points = [2, 2]; //!
+var maxPoints = [2, 2]; //!
 
 function connectedTile(y, x) {
   var connected = false;
@@ -105,20 +52,6 @@ function moveTile(y, x) {
 
 
 }
-
-$(document).ready(function() {
-  var canvas = $('#canvas');
-  context = canvas.get(0).getContext('2d');
-  setBackground();
-
-  setInterval(draw, 10);
-  canvas.mousemove(function(e) {
-    var mousex = e.pageX - canvas.offset().left;
-    var mousey = e.pageY - canvas.offset().top;
-
-	mouse.x = mousex;
-	mouse.y = mousey;
-  });
 
   canvas.mousedown(function(e) {
     var mousex = e.pageX - canvas.offset().left;
