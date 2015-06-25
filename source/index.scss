@@ -6,25 +6,3 @@ html
     color: #111;
     background-color: #BBB;
 }
-
-$black: #222;
-$red: #C00;
-$blue: #00C;
-
-.cell {
-    cursor: pointer;
-    position: absolute;
-    border-radius: 0.05em;
-
-    &.player-0 {
-        background-color: $black;
-    }
-
-    &.player-1 {
-        background-color: $red;
-    }
-
-    &.player-2 {
-        background-color: $blue;
-    }
-}
