@@ -3,18 +3,48 @@ window.Phlux = require("phlux")
 
 var GameFrame = require("<scripts>/components/GameFrame")
 
-var grid = [
-	[1, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 0],
-	[0, 0, 0, 0, 2]
-]
+var Cell = function(x, y) {
+	this.position = {
+		"x": x, "y": y
+	}
 
-var Cell = React.createClass({
+	if(x == 1 && y == 1
+	|| x == 2 && y == 2
+	|| x == 3 && y == 3) {
+		this.wallable = false
+	} else {
+		this.wallable = true
+	}
+
+	if(x == 4 && y == 0) {
+		this.claim = 1
+	} else if(x == 0 && y == 4) {
+		this.claim = 2
+	} else {
+		this.claim = 0
+	}
+}
+
+Cell.prototype.onClick = function() {
+	console.log(this.position)
+}
+
+var CellStore = Phlux.createStore({
+	initiateStore: function() {
+		for(var x = 0; x < 5; x++) {
+			for(var y = 0; y < 5; y++) {
+				var cell = new Cell(x, y)
+				this.data[x + "x" + y] = cell
+			}
+		}
+	}
+})
+
+var CellRender = React.createClass({
     render: function() {
         return (
-			<div style={this.renderStyle()}
+			<div className={"cell" + " claim-" + this.props.data.claim}
+				style={this.renderStyle()}
 				onClick={this.onClick}>
             	{this.props.value}
 			</div>
@@ -22,12 +52,11 @@ var Cell = React.createClass({
     },
 	renderStyle: function() {
 		return {
-			width: "1em",
-			height: "1em",
-			position: "absolute",
-			top: this.props.data.position.y + "em",
-			left: this.props.data.position.x + "em",
-			backgroundColor: "red"
+			width: 1 - 0.1 + "em",
+			height: 1 - 0.1 + "em",
+			top: this.props.data.position.y + 0.05 + "em",
+			left: this.props.data.position.x + 0.05 + "em",
+			border: this.props.data.wallable ? null : "0.1em dashed #EEE",
 		}
 	},
 	onClick: function() {
@@ -36,6 +65,9 @@ var Cell = React.createClass({
 })
 
 var Game = React.createClass({
+	mixins: [
+		Phlux.connectStore(CellStore, "cells")
+	],
     render: function() {
         return (
             <GameFrame aspect-ratio="5x5">
@@ -45,20 +77,11 @@ var Game = React.createClass({
     },
     renderGrid: function() {
 		var renderings = []
-		for(var y in grid) {
-			for(var x in grid[y]) {
-				var data = {
-					position: {
-						"x": x,
-						"y": y
-					},
-					value: grid[x][y]
-				}
-				renderings.push(
-					<Cell key={x + "x" + y}
-						data={data}/>
-				)
-			}
+		for(var coords in this.state.cells) {
+			var cell = this.state.cells[coords]
+			renderings.push(
+				<CellRender key={coords} data={cell}/>
+			)
 		}
 		return renderings
     }

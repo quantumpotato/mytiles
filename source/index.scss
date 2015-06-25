@@ -3,6 +3,28 @@
 
 html
 {
-    color: #EEE;
-    background-color: #111;
+    color: #111;
+    background-color: #BBB;
+}
+
+.cell {
+    cursor: pointer;
+    position: absolute;
+    border-radius: 0.05em;
+
+    &.claim-0 {
+        background-color: #222;
+
+        &:hover {
+            background-color: #CCC;
+        }
+    }
+
+    &.claim-1 {
+        background-color: #C00;
+    }
+
+    &.claim-2 {
+        background-color: #00C;
+    }
 }
