@@ -1,5 +1,6 @@
 window.React = require("react")
 window.Phlux = require("phlux")
+window.Classnames = require("classnames")
 
 var GameFrame = require("<scripts>/components/GameFrame")
 
@@ -46,13 +47,19 @@ var CellStore = Phlux.createStore({
 var CellRender = React.createClass({
     render: function() {
         return (
-			<div className={"cell" + " claim-" + this.props.data.claim}
+			<div className={this.renderClass()}
 				style={this.renderStyle()}
 				onClick={this.onClick}>
-            	{this.props.value}
+            	{this.renderChildren()}
 			</div>
         )
     },
+	renderClass: function() {
+		return Classnames(
+			"cell",
+			"player-" + this.props.data.claim
+		)
+	},
 	renderStyle: function() {
 		return {
 			width: 1 - 0.1 + "em",
@@ -62,23 +69,26 @@ var CellRender = React.createClass({
 			border: this.props.data.wallable ? null : "0.1em dashed #EEE",
 		}
 	},
+	renderChildren: function() {
+		return undefined
+	},
 	onClick: function() {
 		this.props.data.onClick()
 	}
 })
 
-var Game = React.createClass({
+var GameBoard = React.createClass({
 	mixins: [
 		Phlux.connectStore(CellStore, "cells")
 	],
     render: function() {
         return (
-            <GameFrame aspect-ratio="5x5">
-                {this.renderGrid()}
-            </GameFrame>
+            <div className="game-board">
+				{this.renderCells()}
+			</div>
         )
     },
-    renderGrid: function() {
+    renderCells: function() {
 		var renderings = []
 		for(var coords in this.state.cells) {
 			var cell = this.state.cells[coords]
@@ -87,6 +97,16 @@ var Game = React.createClass({
 			)
 		}
 		return renderings
+    }
+})
+
+var Game = React.createClass({
+    render: function() {
+        return (
+            <GameFrame aspect-ratio="5x7">
+				<GameBoard/>
+            </GameFrame>
+        )
     }
 })
 

@@ -6,6 +6,7 @@
     "url": "https://github.com/quantumpotato/mytiles"
   },
   "dependencies": {
+    "classnames": "^2.1.2",
     "phlux": "^1.0.3",
     "react": "~0.12.2"
   },

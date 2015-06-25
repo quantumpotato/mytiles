@@ -7,24 +7,24 @@ html
     background-color: #BBB;
 }
 
+$black: #222;
+$red: #C00;
+$blue: #00C;
+
 .cell {
     cursor: pointer;
     position: absolute;
     border-radius: 0.05em;
 
-    &.claim-0 {
-        background-color: #222;
-
-        &:hover {
-            background-color: #CCC;
-        }
+    &.player-0 {
+        background-color: $black;
     }
 
-    &.claim-1 {
-        background-color: #C00;
+    &.player-1 {
+        background-color: $red;
     }
 
-    &.claim-2 {
-        background-color: #00C;
+    &.player-2 {
+        background-color: $blue;
     }
 }
