@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "classnames": "^2.1.2",
-    "phlux": "^1.0.4",
+    "phlux": "^1.0.5",
     "react": "~0.12.2"
   },
   "devDependencies": {
