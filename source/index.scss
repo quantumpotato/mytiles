@@ -1,8 +1,10 @@
-@import "./styles/Defaults.scss";
-@import "./styles/GameFrame.scss";
+@import "./styles/defaults.scss";
+@import "./styles/gameframe.scss";
+@import "./styles/fonts.scss";
 
 html
 {
     color: #111;
-    background-color: #BBB;
+    font-family: goldfish;
+    background-color: #EEE;
 }

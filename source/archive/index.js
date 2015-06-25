@@ -1,7 +1,3 @@
-var turn = 0; //!
-var points = [2, 2]; //!
-var maxPoints = [2, 2]; //!
-
 function connectedTile(y, x) {
   var connected = false;
   if (x > 0) {
