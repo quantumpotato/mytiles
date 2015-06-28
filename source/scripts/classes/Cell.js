@@ -4,27 +4,27 @@ var PlayerStore = require("<scripts>/stores/PlayerStore")
 var CELL_PADDING = 0.2
 var CELL_ROUNDING = 0.05
 
-var Cell = function(x, y) {
-    this.position = {
-        "x": x, "y": y
+var Cell = function(protocell) {
+    this.x = protocell.x || 0
+    this.y = protocell.y || 0
+    
+    if(protocell.store != undefined) {
+        this.store = protocell.store
     }
-    this._id = x + "x" + y
-    if(x == 1 && y == 1
-    || x == 2 && y == 2
-    || x == 3 && y == 3) {
+    
+    if(protocell.value == "X") {
+        this.isUnwallable = true
         this.isTrenches = true
-        this.isUnwallable = true
-    }
-    if(x == 0 && y == 4) {
-        this.isKing = true
-        this.isClaimed = true
-        this.isUnwallable = true
+    } else if(protocell.value == "1") {
         this.player = PlayerStore.getPlayer(0)
-    } else if(x == 4 && y == 0) {
-        this.isKing = true
-        this.isClaimed = true
         this.isUnwallable = true
+        this.isClaimed = true
+        this.isKing = true
+    } else if(protocell.value == "2") {
         this.player = PlayerStore.getPlayer(1)
+        this.isUnwallable = true
+        this.isClaimed = true
+        this.isKing = true
     }
 }
 
@@ -61,8 +61,8 @@ Cell.prototype.renderStyle = function() {
         width: 1 - CELL_PADDING + "em",
         height: 1 - CELL_PADDING + "em",
         borderRadius: CELL_ROUNDING + "em",
-        top: this.position.y + (CELL_PADDING / 2) + "em",
-        left: this.position.x + (CELL_PADDING / 2) + "em",
+        top: this.y + (CELL_PADDING / 2) + "em",
+        left: this.x + (CELL_PADDING / 2) + "em",
         border: this.isTrenches ? "0.1em dashed #EEE" : null,
         backgroundImage: this.isKing ? "url(assets/images/king.png)" : null,
         backgroundSize: "75%",
@@ -74,17 +74,15 @@ Cell.prototype.renderStyle = function() {
 }
 
 Cell.prototype.getNeighborCells = function() {
-    var x = this.position.x
-    var y = this.position.y
     var cells = []
-    if(this.store.data[x + "x" + (y - 1)]) {
-        cells.push(this.store.data[(x-1) + "x" + y])
-    } if(this.store.data[x + "x" + (y + 1)]) {
-        cells.push(this.store.data[(x-1) + "x" + y])
-    } if(this.store.data[(x - 1) + "x" + y]) {
-        cells.push(this.store.data[(x-1) + "x" + y])
-    } if(this.store.data[(x + 1) + "x" + y]) {
-        cells.push(this.store.data[(x-1) + "x" + y])
+    if(this.store.data[this.x + "x" + (this.y - 1)]) {
+        cells.push(this.store.data[this.x + "x" + (this.y - 1)])
+    } if(this.store.data[this.x + "x" + (this.y + 1)]) {
+        cells.push(this.store.data[this.x + "x" + (this.y + 1)])
+    } if(this.store.data[(this.x - 1) + "x" + this.y]) {
+        cells.push(this.store.data[(this.x - 1) + "x" + this.y])
+    } if(this.store.data[(this.x + 1) + "x" + this.y]) {
+        cells.push(this.store.data[(this.x + 1) + "x" + this.y])
     }
     return cells
 }
