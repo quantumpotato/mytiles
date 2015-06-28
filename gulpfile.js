@@ -15,7 +15,6 @@ var reactify = require("reactify")
 var envify = require("envify/custom")
 var aliasify = require("aliasify")
 
-var opn = require("opn")
 var del = require("del")
 var chalk = require("chalk")
 var yargs = require("yargs")
@@ -125,7 +124,6 @@ gulp.task("server", function() {
         livereload: true,
         port: 2468
     })
-    opn("http://localhost:2468")
 })
 
 process.on("uncaughtException", function (error) {
