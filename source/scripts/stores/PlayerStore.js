@@ -1,11 +1,15 @@
 var GameStore = require("<scripts>/stores/GameStore")
+var GameColors = require("<scripts>/data/GameColors")
 var Player = require("<scripts>/classes/Player")
 
 var PlayerStore = Phlux.createStore({
     initiateStore: function() {
         for(var index = 0; index <= 1; index++) {
-            this.data[index] = new Player(index)
-            this.data[index].trigger = this.trigger.bind(this)
+            this.data[index] = new Player({
+                "colors": GameColors[index + 1],
+                "name": "P" + (index + 1),
+                "store": this
+            })
         }
     },
     getPlayer: function(_id) {

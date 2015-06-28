@@ -9,6 +9,9 @@ var GameStore = Phlux.createStore({
         this.data.player += 1
         this.data.player %= 2
         this.trigger()
+    },
+    declareWinningPlayer: function(player) {
+        alert(player.name + " wins!")
     }
 })
 

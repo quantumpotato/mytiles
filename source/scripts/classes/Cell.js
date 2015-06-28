@@ -8,30 +8,30 @@ var Cell = function(protocell) {
     this.x = protocell.x || 0
     this.y = protocell.y || 0
     
-    if(protocell.store != undefined) {
+    if(!!protocell.store) {
         this.store = protocell.store
     }
     
     if(protocell.value == "X") {
-        this.isUnwallable = true
         this.isTrenches = true
-    } else if(protocell.value == "1") {
+    } else if(protocell.value == "a") {
         this.player = PlayerStore.getPlayer(0)
-        this.isUnwallable = true
-        this.isClaimed = true
-        this.isKing = true
-    } else if(protocell.value == "2") {
+    } else if(protocell.value == "A") {
+        this.player = PlayerStore.getPlayer(0)
+        this.kingplayer = PlayerStore.getPlayer(0)
+    } else if(protocell.value == "b") {
         this.player = PlayerStore.getPlayer(1)
-        this.isUnwallable = true
-        this.isClaimed = true
-        this.isKing = true
+    } else if(protocell.value == "B") {
+        this.player = PlayerStore.getPlayer(1)
+        this.kingplayer = PlayerStore.getPlayer(1)
     }
 }
 
 Cell.prototype.onClick = function() {
-    this.player = PlayerStore.getCurrentPlayer()
-    if(this.player.canClaim(this)) {
-        this.player.claim(this)
+    var player = PlayerStore.getCurrentPlayer()
+    if(player.canClaim(this)) {
+        player.claim(this)
+        this.store.trigger()
     }
 }
 
@@ -46,13 +46,15 @@ Cell.prototype.onMouseOut = function() {
 }
 
 Cell.prototype.renderStyle = function() {
-    var current_player = PlayerStore.getCurrentPlayer()
+    var currentPlayer = PlayerStore.getCurrentPlayer()
+    
     var cursor = "auto"
-    var color = GameColors["-1"]
-    if(this.isHovered && this.player != current_player) {
-        color = current_player.colors.dark
+    var color = GameColors["-1"].light
+    
+    if(this.isHovered) {
+        color = currentPlayer.colors.dark
         cursor = "pointer"
-    } else if(this.isClaimed) {
+    } else if(!!this.player) {
         color = this.player.colors.light
     }
     
@@ -64,7 +66,7 @@ Cell.prototype.renderStyle = function() {
         top: this.y + (CELL_PADDING / 2) + "em",
         left: this.x + (CELL_PADDING / 2) + "em",
         border: this.isTrenches ? "0.1em dashed #EEE" : null,
-        backgroundImage: this.isKing ? "url(assets/images/king.png)" : null,
+        backgroundImage: !!this.kingplayer ? "url(assets/images/king.png)" : null,
         backgroundSize: "75%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

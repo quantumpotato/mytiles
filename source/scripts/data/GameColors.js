@@ -1,13 +1,16 @@
 var GameColors = {
-    "P1": {
+    "1": {
         "light": "#00C",
         "dark": "#008"
     },
-    "P2": {
+    "2": {
         "light": "#C00",
         "dark": "#800"
     },
-    "-1": "#888"
+    "-1": {
+        "light": "#888",
+        "dark": "#444"
+    }
 }
 
 module.exports = GameColors
