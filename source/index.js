@@ -1,6 +1,6 @@
 window.React = require("react")
 window.Phlux = require("phlux")
-window.Classnames = require("classnames")
+window.Pather = require("pathfinding")
 
 var Cell = require("<scripts>/classes/Cell")
 var CellView = require("<scripts>/views/CellView")
@@ -42,8 +42,7 @@ var Game = React.createClass({
     },
     styles: {
         players: {
-            top: "0em",
-            height: "2em",
+            height: "2em"
         },
         cells: {
             bottom: "0em",

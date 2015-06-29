@@ -61,14 +61,14 @@ Cell.prototype.onMouseOut = function() {
 
 Cell.prototype.getNeighborCells = function() {
     var cells = []
-    if(this.store.data[this.x + "x" + (this.y - 1)]) {
-        cells.push(this.store.data[this.x + "x" + (this.y - 1)])
-    } if(this.store.data[this.x + "x" + (this.y + 1)]) {
-        cells.push(this.store.data[this.x + "x" + (this.y + 1)])
-    } if(this.store.data[(this.x - 1) + "x" + this.y]) {
-        cells.push(this.store.data[(this.x - 1) + "x" + this.y])
-    } if(this.store.data[(this.x + 1) + "x" + this.y]) {
-        cells.push(this.store.data[(this.x + 1) + "x" + this.y])
+    if(!!this.store.getCell(this.x, this.y - 1)) {
+        cells.push(this.store.getCell(this.x, this.y - 1))
+    } if(!!this.store.getCell(this.x, this.y + 1)) {
+        cells.push(this.store.getCell(this.x, this.y + 1))
+    } if(!!this.store.getCell(this.x - 1, this.y)) {
+        cells.push(this.store.getCell(this.x - 1, this.y))
+    } if(!!this.store.getCell(this.x + 1, this.y)) {
+        cells.push(this.store.getCell(this.x + 1, this.y))
     }
     return cells
 }

@@ -15,6 +15,25 @@ var CellStore = Phlux.createStore({
                 })
             }
         }
+    },
+    getCell: function(x, y) {
+        return this.data[x + "x" + y]
+    },
+    getCells: function() {
+        return this.data
+    },
+    getPatherGrid: function(player) {
+        var grid = new Pather.Grid(5, 5)
+        for(var x = 0; x < grid.width; x++) {
+            for(var y = 0; y < grid.height; y++) {
+                var cell = this.getCell(x, y)
+                if(cell.player == player
+                || cell.player == undefined) {
+                    grid.setWalkableAt(x, y, false)
+                }
+            }
+        }
+        return grid
     }
 })
 
