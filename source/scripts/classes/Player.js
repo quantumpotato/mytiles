@@ -64,28 +64,9 @@ Player.prototype.claim = function(cell) {
         GameStore.togglePlayer()
     }
     
-    // this code is for checking for
-    // being cut off. it's very hacky
-    // because it's all hardcoded.
-    var cells = cell.store.getCells()
-    for(var key in cells) {
-        var cell = cells[key]
-        if(cell.player != this
-        && cell.player != undefined) {
-            var cx = cell.x
-            var cy = cell.y
-            var kx = this.name != "P2" ? 4 : 0
-            var ky = this.name != "P1" ? 4 : 0
-            var pather = new Pather.AStarFinder()
-            var grid = cell.store.getPatherGrid(this)
-            var path = pather.findPath(cx, cy, kx, ky, grid)
-            if(path.length == 0) {
-                cell.player = this
-            }
-        }
-    }
-    
-    
+    cell.store.getCutoffCells(this).forEach(function(cell) {
+        cell.player = this
+    }.bind(this))
     
     if(!!this.store) {
         this.store.trigger()
