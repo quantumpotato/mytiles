@@ -1,8 +1,32 @@
 var GameStore = require("<scripts>/stores/GameStore")
 
+/*new Player({
+    // name <String>
+    // Should be no more than three
+    // characters. Defaults to "%&$".
+    "name": "red",
+    // colors <Object>
+    // Should include both lighter and
+    // darker shades of a color. Can be
+    // formatted as rgb or hex. Defaults
+    // to dark gray and light gray.
+    "colors": {
+        "light": "#C00",
+        "dark": "#800"
+    },
+    // store <PhluxStore>
+    // Optional. Will trigger the store
+    // whenever the data has changed.
+    "store": this
+})*/
+
 var Player = function(protoplayer) {
-    this.name = protoplayer.name
-    this.colors = protoplayer.colors
+    this.name = protoplayer.name.substring(0, 3) || "%&$"
+    
+    this.colors = protoplayer.colors || {
+        "light": "#444",
+        "dark": "#222"
+    }
     
     if(!!protoplayer.store) {
         this.store = protoplayer.store
@@ -40,7 +64,9 @@ Player.prototype.claim = function(cell) {
         GameStore.togglePlayer()
     }
     
-    this.store.trigger()
+    if(!!this.store) {
+        this.store.trigger()
+    }
 }
 
 module.exports = Player

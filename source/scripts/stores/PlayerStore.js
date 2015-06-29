@@ -1,6 +1,7 @@
+var Player = require("<scripts>/classes/Player")
+
 var GameStore = require("<scripts>/stores/GameStore")
 var GameColors = require("<scripts>/data/GameColors")
-var Player = require("<scripts>/classes/Player")
 
 var PlayerStore = Phlux.createStore({
     initiateStore: function() {

@@ -1,8 +1,22 @@
 var GameColors = require("<scripts>/data/GameColors")
 var PlayerStore = require("<scripts>/stores/PlayerStore")
 
-var CELL_PADDING = 0.2
-var CELL_ROUNDING = 0.05
+/*new Cell({
+    // x, y <Number>
+    // Defaults to zero.
+    "x": 3, "y": 3,
+    // value <String>
+    // Will define the initial attributes
+    // of the cell. Should enumerate to
+    // one of the characters from the
+    // legend, seen in GameLevels.
+    // Defaults to "."
+    "value": "X",
+    // store <PhluxStore>
+    // Optional. Will trigger the store
+    // whenever the data has changed.
+    "store": this
+})*/
 
 var Cell = function(protocell) {
     this.x = protocell.x || 0
@@ -45,6 +59,23 @@ Cell.prototype.onMouseOut = function() {
     this.store.trigger()
 }
 
+Cell.prototype.getNeighborCells = function() {
+    var cells = []
+    if(this.store.data[this.x + "x" + (this.y - 1)]) {
+        cells.push(this.store.data[this.x + "x" + (this.y - 1)])
+    } if(this.store.data[this.x + "x" + (this.y + 1)]) {
+        cells.push(this.store.data[this.x + "x" + (this.y + 1)])
+    } if(this.store.data[(this.x - 1) + "x" + this.y]) {
+        cells.push(this.store.data[(this.x - 1) + "x" + this.y])
+    } if(this.store.data[(this.x + 1) + "x" + this.y]) {
+        cells.push(this.store.data[(this.x + 1) + "x" + this.y])
+    }
+    return cells
+}
+
+var CELL_PADDING = 0.2
+var CELL_ROUNDING = 0.05
+
 Cell.prototype.renderStyle = function() {
     var currentPlayer = PlayerStore.getCurrentPlayer()
     
@@ -73,20 +104,6 @@ Cell.prototype.renderStyle = function() {
         backgroundColor: color,
         cursor: cursor,
     }
-}
-
-Cell.prototype.getNeighborCells = function() {
-    var cells = []
-    if(this.store.data[this.x + "x" + (this.y - 1)]) {
-        cells.push(this.store.data[this.x + "x" + (this.y - 1)])
-    } if(this.store.data[this.x + "x" + (this.y + 1)]) {
-        cells.push(this.store.data[this.x + "x" + (this.y + 1)])
-    } if(this.store.data[(this.x - 1) + "x" + this.y]) {
-        cells.push(this.store.data[(this.x - 1) + "x" + this.y])
-    } if(this.store.data[(this.x + 1) + "x" + this.y]) {
-        cells.push(this.store.data[(this.x + 1) + "x" + this.y])
-    }
-    return cells
 }
 
 module.exports = Cell
