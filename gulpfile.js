@@ -9,6 +9,7 @@ var gulp_minify_html = require("gulp-minify-html")
 var gulp_prefixify_css = require("gulp-autoprefixer")
 var gulp_json_transform = require("gulp-json-transform")
 
+var installify = require("installify")
 var watchify = require("watchify")
 var browserify = require("browserify")
 var reactify = require("reactify")
@@ -24,9 +25,6 @@ var vinyl_source = require("vinyl-source-stream")
 browserify = browserify(watchify.args)
     .add("./source/index.js")
     .transform("reactify")
-    .transform(envify({
-        devmode: yargs.argv.devmode
-    }))
     .transform(aliasify.configure({
         configDir: __dirname,
         aliases: {
@@ -36,6 +34,7 @@ browserify = browserify(watchify.args)
             "<assets>": "./source/assets"
         }
     }))
+    .transform("installify")
 
 gulp.task("default", function() {
     gulp.start("build")
